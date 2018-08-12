@@ -2,13 +2,28 @@ import sys
 import os
 import magic
 import exifread
+import datetime
+from shutil import copyfile
 
 class Yaps:
+    def __init__(self):
+        self.directory = False
+        self.outputDirectory = False
+
     def setDirectory(self, directory):
         if(os.path.isdir(directory)):
             self.directory = directory
         else:
             raise FileNotFoundError('Directory not found')
+
+    def setOutputDirectory(self, directory):
+        if(os.path.isdir(directory)):
+            if not self.os.access(directory, os.W_OK):
+                raise Exception('Directory not writable')
+
+            self.outputDirectory = directory
+        else:
+            raise FileNotFoundError('Output directory not found')
 
     def iterateFiles(self):
         for filename in os.listdir(self.directory):
@@ -17,7 +32,20 @@ class Yaps:
             if(os.path.isdir(fullFilePath)):
                 continue  
             if(self.checkIfImage(fullFilePath)):
-                self.readExifData(fullFilePath)
+                imageDate = self.readExifData(fullFilePath)
+
+                if imageDate:
+                    dirName = self.getDirNameByDate(imageDate)
+                else:
+                    dirName = 'unknown_date'
+
+                self.createDirIfNotExist(dirName)
+
+                if(self.outputDirectory):
+                    target = self.outputDirectory + '/' + filename
+                else:
+                    target = './' + filename
+                self.copyFileIfNotExist(fullFilePath, target)
 
     def checkIfImage(self, filename):
         BMP_MIME = 'image/bmp'
@@ -34,14 +62,38 @@ class Yaps:
     def readExifData(self, filename):
         f = open(filename, 'rb')
         tags = exifread.process_file(f, details=False)
+        f.close()
+
         if 'Image DateTime' in tags:
             print("Zdjęcie zrobiono dnia: ",tags['Image DateTime'])
-        f.close()
+            return tags['Image DateTime'].values
+        else:
+            return False
+
+    def getDirNameByDate(self, date):
+        return datetime.datetime.strptime(date, '%Y:%m:%d %H:%M:%S').strftime('%y-%m-%d')
+
+    def createDirIfNotExist(self, name):
+        if(self.outputDirectory):
+            directory = self.outputDirectory + '/' + name
+        else:
+            directory = './' + name
+
+        if(os.path.isdir(directory)):
+            return
+        os.mkdir(directory)
+
+    def copyFileIfNotExist(self, src, target):
+        return copyfile(src, target)
 
 app = Yaps()
 
 if(len(sys.argv) > 1):
     app.setDirectory(sys.argv[1])
-    app.iterateFiles()
 else:
     raise Exception('Not enough parameters')
+
+if(len(sys.argv) > 2):
+    app.setOutputDirectory(sys.argv[2])
+
+app.iterateFiles()
