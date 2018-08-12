@@ -4,6 +4,7 @@ import magic
 import exifread
 import datetime
 from shutil import copyfile
+from tkinter import *
 
 class Yaps:
     def __init__(self):
@@ -90,14 +91,42 @@ class Yaps:
     def copyFileIfNotExist(self, src, target):
         return copyfile(src, target)
 
-app = Yaps()
+class Gui:
+    def __init__(self, master):
+        w = Label(master, text="YAPS (Yet Another Picture Sorter")
+        w.pack()
 
-if(len(sys.argv) > 1):
-    app.setDirectory(sys.argv[1])
-else:
-    raise Exception('Not enough parameters')
+        frame = Frame(master)
+        frame.pack()
+        
+        self.srcButton = Button(
+            frame, text="Podaj katalog źródłowy", command=self.selectSrc
+        )
+        self.targetButton = Button(
+            frame, text="Podaj katalog docelowy", command=self.selectTarget
+        )
+        self.srcButton.pack(side=LEFT)
+        self.targetButton.pack(side=LEFT)
 
-if(len(sys.argv) > 2):
-    app.setOutputDirectory(sys.argv[2])
+    def selectSrc(self):
+        pass
 
-app.iterateFiles()
+    def selectTarget(self):
+        pass
+
+# app = Yaps()
+
+# if(len(sys.argv) > 1):
+#     app.setDirectory(sys.argv[1])
+# else:
+#     raise Exception('Not enough parameters')
+
+# if(len(sys.argv) > 2):
+#     app.setOutputDirectory(sys.argv[2])
+
+# app.iterateFiles()
+
+root = Tk()
+gui = Gui(root)
+root.mainloop()
+root.destroy()
