@@ -1,6 +1,7 @@
 import sys
 import os
 import magic
+import exifread
 
 class Yaps:
     def setDirectory(self, directory):
@@ -12,11 +13,27 @@ class Yaps:
     def iterateFiles(self):
         for filename in os.listdir(self.directory):
             print('Znaleziono plik: ', filename)
-            self.checkIfImage(filename)
+            fullFilePath = self.directory + '/' + filename  
+            if(self.checkIfImage(fullFilePath)):
+                self.readExifData(fullFilePath)
 
-    def checkIfImage(self, file):
-        mime = magic.Magic(mime=true)
-        print(mime.from_file(self.directory,'/',file))
+    def checkIfImage(self, filename):
+        BMP_MIME = 'image/bmp'
+        JPEG_MIME = 'image/jpeg'
+        GIF_MIME = 'image/gif'
+
+        mime = magic.Magic(mime=True)
+        file_mime = mime.from_file(filename)
+        if(file_mime == BMP_MIME or file_mime == JPEG_MIME or file_mime == GIF_MIME):
+            return True
+        else:
+            return False
+
+    def readExifData(self, filename):
+        f = open(filename, 'rb')
+        tags = exifread.process_file(f)
+        print(tags)
+        f.close()
 
 app = Yaps()
 
