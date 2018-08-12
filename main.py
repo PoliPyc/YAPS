@@ -13,7 +13,9 @@ class Yaps:
     def iterateFiles(self):
         for filename in os.listdir(self.directory):
             print('Znaleziono plik: ', filename)
-            fullFilePath = self.directory + '/' + filename  
+            fullFilePath = self.directory + '/' + filename
+            if(os.path.isdir(fullFilePath)):
+                continue  
             if(self.checkIfImage(fullFilePath)):
                 self.readExifData(fullFilePath)
 
@@ -31,8 +33,9 @@ class Yaps:
 
     def readExifData(self, filename):
         f = open(filename, 'rb')
-        tags = exifread.process_file(f)
-        print(tags)
+        tags = exifread.process_file(f, details=False)
+        if 'Image DateTime' in tags:
+            print("Zdjęcie zrobiono dnia: ",tags['Image DateTime'])
         f.close()
 
 app = Yaps()
