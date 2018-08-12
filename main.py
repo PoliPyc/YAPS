@@ -42,9 +42,9 @@ class Yaps:
                 self.createDirIfNotExist(dirName)
 
                 if(self.outputDirectory):
-                    target = self.outputDirectory + '/' + filename
+                    target = self.outputDirectory + '/' + dirName + '/' + filename
                 else:
-                    target = './' + filename
+                    target = './' + dirName + '/' + filename
                 self.copyFileIfNotExist(fullFilePath, target)
 
     def checkIfImage(self, filename):
