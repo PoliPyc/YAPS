@@ -7,6 +7,7 @@ from shutil import copyfile
 
 class Yaps:
     def __init__(self):
+        self.UNKNOWN_DIR = 'unknown_date'
         self.directory = False
         self.outputDirectory = False
 
@@ -37,7 +38,7 @@ class Yaps:
                 if imageDate:
                     dirName = self.getDirNameByDate(imageDate)
                 else:
-                    dirName = 'unknown_date'
+                    dirName = self.UNKNOWN_DIR
 
                 self.createDirIfNotExist(dirName)
 
@@ -71,7 +72,10 @@ class Yaps:
             return False
 
     def getDirNameByDate(self, date):
-        return datetime.datetime.strptime(date, '%Y:%m:%d %H:%M:%S').strftime('%y-%m-%d')
+        try:
+            return datetime.datetime.strptime(date, '%Y:%m:%d %H:%M:%S').strftime('%Y-%m-%d')
+        except ValueError:
+            return self.UNKNOWN_DIR
 
     def createDirIfNotExist(self, name):
         if(self.outputDirectory):
