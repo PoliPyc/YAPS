@@ -99,22 +99,33 @@ class Gui:
         self.src = ''
         self.target = ''
 
-        w = Label(master, text="YAPS (Yet Another Picture Sorter")
-        w.pack()
-
-        frame = Frame(master)
-        frame.pack()
+        destinationButtons = Frame(master)
+        destinationButtons.pack()
         
         self.srcButton = Button(
-            frame, text="Podaj katalog źródłowy", command=self.selectSrc
+            destinationButtons, text="Podaj katalog źródłowy", command=self.selectSrc
         )
         self.targetButton = Button(
-            frame, text="Podaj katalog docelowy", command=self.selectTarget
+            destinationButtons, text="Podaj katalog docelowy", command=self.selectTarget
         )
-        self.srcButton.pack(side=TOP)
-        self.targetButton.pack(side=TOP)
 
-        self.consoleFrame = Frame(master, height=200)
+        fileMethods = Frame(master)
+        fileMethods.pack()
+
+        self.copyButton = Button(
+            fileMethods, text="Kopiuj", command=self.copyFiles
+        )
+        self.moveButton = Button(
+            fileMethods, text="Przenieś", command=self.moveFiles
+        )
+
+        self.srcButton.pack(side=LEFT)
+        self.targetButton.pack(side=LEFT)
+
+        self.copyButton.pack(side=LEFT)
+        self.moveButton.pack(side=LEFT)
+
+        self.consoleFrame = Frame(master, height=100)
         self.consoleFrame.pack()
 
         self.consoleText = tkst.ScrolledText(self.consoleFrame)
@@ -124,14 +135,20 @@ class Gui:
 
     def selectSrc(self):
         self.src = filedialog.askdirectory()
-        self.updateConsoleText('Source directory set as: ' + self.src + '\n')
+        self.updateConsoleText('Ustawiono katalog źródłowy: ' + self.src + '\n')
 
     def selectTarget(self):
         self.target = filedialog.askdirectory()
-        self.updateConsoleText('Target directory set as: ' + self.src + '\n')
+        self.updateConsoleText('Ustawiono katalog docelowy: ' + self.src + '\n')
 
     def updateConsoleText(self, text):
         self.consoleText.insert(INSERT, text)
+
+    def copyFiles(self):
+        pass
+
+    def moveFiles(self):
+        pass
 
 # app = Yaps()
 
