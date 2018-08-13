@@ -4,7 +4,10 @@ import magic
 import exifread
 import datetime
 from shutil import copyfile
+from tkinter import scrolledtext as tkst
+from tkinter import filedialog
 from tkinter import *
+
 
 class Yaps:
     def __init__(self):
@@ -32,7 +35,7 @@ class Yaps:
             print('Znaleziono plik: ', filename)
             fullFilePath = self.directory + '/' + filename
             if(os.path.isdir(fullFilePath)):
-                continue  
+                continue
             if(self.checkIfImage(fullFilePath)):
                 imageDate = self.readExifData(fullFilePath)
 
@@ -93,6 +96,9 @@ class Yaps:
 
 class Gui:
     def __init__(self, master):
+        self.src = ''
+        self.target = ''
+
         w = Label(master, text="YAPS (Yet Another Picture Sorter")
         w.pack()
 
@@ -105,14 +111,27 @@ class Gui:
         self.targetButton = Button(
             frame, text="Podaj katalog docelowy", command=self.selectTarget
         )
-        self.srcButton.pack(side=LEFT)
-        self.targetButton.pack(side=LEFT)
+        self.srcButton.pack(side=TOP)
+        self.targetButton.pack(side=TOP)
+
+        self.consoleFrame = Frame(master, height=200)
+        self.consoleFrame.pack()
+
+        self.consoleText = tkst.ScrolledText(self.consoleFrame)
+        self.consoleText.pack(side=TOP)
+
+
 
     def selectSrc(self):
-        pass
+        self.src = filedialog.askdirectory()
+        self.updateConsoleText('Source directory set as: ' + self.src + '\n')
 
     def selectTarget(self):
-        pass
+        self.target = filedialog.askdirectory()
+        self.updateConsoleText('Target directory set as: ' + self.src + '\n')
+
+    def updateConsoleText(self, text):
+        self.consoleText.insert(INSERT, text)
 
 # app = Yaps()
 
