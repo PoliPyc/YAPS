@@ -4,6 +4,24 @@ import exifread
 import datetime
 from shutil import copyfile
 
+
+########## NOTES
+# Checking for duplicates
+# 1. List file paths with their sizes
+# 2. From previous list create another one with files of same size and their md5 sums
+# 3. Check for duplicate md5 sums
+#
+########## TO-DO List
+# Check for duplicates
+# Tests!
+# More interactive
+# Refactor setOutputDirectory and iterateFiles
+# GUI
+# Other exif filters
+# Yaps readme, help messages
+#
+
+
 class Yaps:
     def __init__(self):
         self.UNKNOWN_DIR = 'unknown_date'
