@@ -1,4 +1,3 @@
-import sys
 import os
 import magic
 import exifread
@@ -19,7 +18,7 @@ class Yaps:
 
     def setOutputDirectory(self, directory):
         if(os.path.isdir(directory)):
-            if not self.os.access(directory, os.W_OK):
+            if not os.access(directory, os.W_OK):
                 raise Exception('Directory not writable')
 
             self.outputDirectory = directory
@@ -28,7 +27,7 @@ class Yaps:
 
     def iterateFiles(self):
         for filename in os.listdir(self.directory):
-            print('Znaleziono plik: ', filename)
+            print('File found: ', filename)
             fullFilePath = self.directory + '/' + filename
             if(os.path.isdir(fullFilePath)):
                 continue
@@ -66,7 +65,7 @@ class Yaps:
         f.close()
 
         if 'Image DateTime' in tags:
-            print("Zdjęcie zrobiono dnia: ",tags['Image DateTime'])
+            print("Picture was shot on: ",tags['Image DateTime'])
             return tags['Image DateTime'].values
         else:
             return False

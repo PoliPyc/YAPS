@@ -23,7 +23,7 @@ if(len(sys.argv) > 1):
     if sys.argv[1] == '--gui' or sys.argv[1] == '-g':
         runGui()
     else:
-        runCli()
+        runCli(app)
 else:
     raise Exception('Not enough parameters')
 
