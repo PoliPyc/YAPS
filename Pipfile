@@ -9,6 +9,7 @@ ExifRead = "==2.1.2"
 
 [dev-packages]
 pytest = "*"
+pylint = "*"
 
 [requires]
 python_version = "3.6"
