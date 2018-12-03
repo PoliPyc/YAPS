@@ -1,168 +1,32 @@
 import sys
-import os
-import magic
-import exifread
-import datetime
-from shutil import copyfile
-from tkinter import scrolledtext as tkst
-from tkinter import filedialog
-from tkinter import *
+from tkinter import Tk
+
+from yaps import Yaps
+from gui import Gui
+
+def runGui():
+    root = Tk()
+    gui = Gui(root)
+    root.mainloop()
+    root.destroy()
+
+def runCli(app):
+    app.setDirectory(sys.argv[1])
+    if(len(sys.argv) > 2):
+        app.setOutputDirectory(sys.argv[2])
+    app.iterateFiles()
 
 
-class Yaps:
-    def __init__(self):
-        self.UNKNOWN_DIR = 'unknown_date'
-        self.directory = False
-        self.outputDirectory = False
+app = Yaps()
 
-    def setDirectory(self, directory):
-        if(os.path.isdir(directory)):
-            self.directory = directory
-        else:
-            raise FileNotFoundError('Directory not found')
-
-    def setOutputDirectory(self, directory):
-        if(os.path.isdir(directory)):
-            if not self.os.access(directory, os.W_OK):
-                raise Exception('Directory not writable')
-
-            self.outputDirectory = directory
-        else:
-            raise FileNotFoundError('Output directory not found')
-
-    def iterateFiles(self):
-        for filename in os.listdir(self.directory):
-            print('Znaleziono plik: ', filename)
-            fullFilePath = self.directory + '/' + filename
-            if(os.path.isdir(fullFilePath)):
-                continue
-            if(self.checkIfImage(fullFilePath)):
-                imageDate = self.readExifData(fullFilePath)
-
-                if imageDate:
-                    dirName = self.getDirNameByDate(imageDate)
-                else:
-                    dirName = self.UNKNOWN_DIR
-
-                self.createDirIfNotExist(dirName)
-
-                if(self.outputDirectory):
-                    target = self.outputDirectory + '/' + dirName + '/' + filename
-                else:
-                    target = './' + dirName + '/' + filename
-                self.copyFileIfNotExist(fullFilePath, target)
-
-    def checkIfImage(self, filename):
-        BMP_MIME = 'image/bmp'
-        JPEG_MIME = 'image/jpeg'
-        GIF_MIME = 'image/gif'
-
-        mime = magic.Magic(mime=True)
-        file_mime = mime.from_file(filename)
-        if(file_mime == BMP_MIME or file_mime == JPEG_MIME or file_mime == GIF_MIME):
-            return True
-        else:
-            return False
-
-    def readExifData(self, filename):
-        f = open(filename, 'rb')
-        tags = exifread.process_file(f, details=False)
-        f.close()
-
-        if 'Image DateTime' in tags:
-            print("Zdjęcie zrobiono dnia: ",tags['Image DateTime'])
-            return tags['Image DateTime'].values
-        else:
-            return False
-
-    def getDirNameByDate(self, date):
-        try:
-            return datetime.datetime.strptime(date, '%Y:%m:%d %H:%M:%S').strftime('%Y-%m-%d')
-        except ValueError:
-            return self.UNKNOWN_DIR
-
-    def createDirIfNotExist(self, name):
-        if(self.outputDirectory):
-            directory = self.outputDirectory + '/' + name
-        else:
-            directory = './' + name
-
-        if(os.path.isdir(directory)):
-            return
-        os.mkdir(directory)
-
-    def copyFileIfNotExist(self, src, target):
-        return copyfile(src, target)
-
-class Gui:
-    def __init__(self, master):
-        self.src = ''
-        self.target = ''
-
-        destinationButtons = Frame(master)
-        destinationButtons.pack()
-        
-        self.srcButton = Button(
-            destinationButtons, text="Podaj katalog źródłowy", command=self.selectSrc
-        )
-        self.targetButton = Button(
-            destinationButtons, text="Podaj katalog docelowy", command=self.selectTarget
-        )
-
-        fileMethods = Frame(master)
-        fileMethods.pack()
-
-        self.copyButton = Button(
-            fileMethods, text="Kopiuj", command=self.copyFiles
-        )
-        self.moveButton = Button(
-            fileMethods, text="Przenieś", command=self.moveFiles
-        )
-
-        self.srcButton.pack(side=LEFT)
-        self.targetButton.pack(side=LEFT)
-
-        self.copyButton.pack(side=LEFT)
-        self.moveButton.pack(side=LEFT)
-
-        self.consoleFrame = Frame(master, height=100)
-        self.consoleFrame.pack()
-
-        self.consoleText = tkst.ScrolledText(self.consoleFrame)
-        self.consoleText.pack(side=TOP)
+if(len(sys.argv) > 1):
+    if sys.argv[1] == '--gui' or sys.argv[1] == '-g':
+        runGui()
+    else:
+        runCli()
+else:
+    raise Exception('Not enough parameters')
 
 
 
-    def selectSrc(self):
-        self.src = filedialog.askdirectory()
-        self.updateConsoleText('Ustawiono katalog źródłowy: ' + self.src + '\n')
 
-    def selectTarget(self):
-        self.target = filedialog.askdirectory()
-        self.updateConsoleText('Ustawiono katalog docelowy: ' + self.src + '\n')
-
-    def updateConsoleText(self, text):
-        self.consoleText.insert(INSERT, text)
-
-    def copyFiles(self):
-        pass
-
-    def moveFiles(self):
-        pass
-
-# app = Yaps()
-
-# if(len(sys.argv) > 1):
-#     app.setDirectory(sys.argv[1])
-# else:
-#     raise Exception('Not enough parameters')
-
-# if(len(sys.argv) > 2):
-#     app.setOutputDirectory(sys.argv[2])
-
-# app.iterateFiles()
-
-root = Tk()
-gui = Gui(root)
-root.mainloop()
-root.destroy()
