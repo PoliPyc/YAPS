@@ -1,3 +1,6 @@
+.coverage
 .idea
+.pytest_cache
 .vscode
+htmlcov
 yaps.egg-info

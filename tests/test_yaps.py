@@ -19,6 +19,7 @@ def testSetDirectory():
 def testSetOutputDirectory(tmpdir):
     unwritableDirPath = tmpdir + '/unwriteableDir'
     writableDirPath = tmpdir + '/writeableDir'
+    notExistingPath = tmpdir + '/notExistingDir'
 
     os.mkdir(unwritableDirPath, 0o555)
     os.mkdir(writableDirPath, 0o777)
@@ -30,6 +31,9 @@ def testSetOutputDirectory(tmpdir):
     yaps.setOutputDirectory(writableDirPath)
 
     assert yaps.outputDirectory == writableDirPath
+
+    with pytest.raises(FileNotFoundError):
+        yaps.setOutputDirectory(notExistingPath)
 
 def testGetDirNameByDate():
     yaps = Yaps()
