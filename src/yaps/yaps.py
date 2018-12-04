@@ -91,7 +91,7 @@ class Yaps:
     def getDirNameByDate(self, date):
         try:
             return datetime.datetime.strptime(date, '%Y:%m:%d %H:%M:%S').strftime('%Y-%m-%d')
-        except ValueError:
+        except (ValueError, TypeError):
             return self.UNKNOWN_DIR
 
     def createDirIfNotExist(self, name):

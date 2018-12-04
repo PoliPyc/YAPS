@@ -17,12 +17,33 @@ def testSetDirectory():
         yaps.setDirectory('./notExistingDir')
 
 def testSetOutputDirectory(tmpdir):
-    d = tmpdir.mkdir('unwriteableDir', '0666')
-    path = str(d)
-    yaps = Yaps()
-    yaps.setOutputDirectory(path)
+    unwritableDirPath = tmpdir + '/unwriteableDir'
+    writableDirPath = tmpdir + '/writeableDir'
 
-    pprint(str(d))
-    assert 0
+    os.mkdir(unwritableDirPath, 0o555)
+    os.mkdir(writableDirPath, 0o777)
+    yaps = Yaps()
+    
+    with pytest.raises(Exception):
+        yaps.setOutputDirectory(unwritableDirPath)
+
+    yaps.setOutputDirectory(writableDirPath)
+
+    assert yaps.outputDirectory == writableDirPath
+
+def testGetDirNameByDate():
+    yaps = Yaps()
+
+    date = '2018:09:01 04:40:23'
+    assert yaps.getDirNameByDate(date) == '2018-09-01'
+
+    date = '2018:09:01'
+    assert yaps.getDirNameByDate(date) == yaps.UNKNOWN_DIR
+
+    date = 'fdasfasdg'
+    assert yaps.getDirNameByDate(date) == yaps.UNKNOWN_DIR
+
+    assert yaps.getDirNameByDate(None) == yaps.UNKNOWN_DIR
+
 
 
