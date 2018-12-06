@@ -3,7 +3,8 @@ from tkinter import filedialog
 from tkinter import *
 
 class Gui:
-    def __init__(self, master):
+    def __init__(self, master, yaps):
+        self.yaps = yaps
         self.src = ''
         self.target = ''
 
@@ -41,17 +42,26 @@ class Gui:
 
     def selectSrc(self):
         self.src = filedialog.askdirectory()
+        self.yaps.setDirectory(self.src)
         self.updateConsoleText('Ustawiono katalog źródłowy: ' + self.src + '\n')
 
     def selectTarget(self):
         self.target = filedialog.askdirectory()
-        self.updateConsoleText('Ustawiono katalog docelowy: ' + self.src + '\n')
+        self.yaps.setOutputDirectory(self.target)
+        self.updateConsoleText('Ustawiono katalog docelowy: ' + self.target + '\n')
 
     def updateConsoleText(self, text):
         self.consoleText.insert(INSERT, text)
 
     def copyFiles(self):
-        pass
+        try:
+            self.updateConsoleText('Transfer zdjęć...\n')
+            self.yaps.iterateFiles()
+            self.updateConsoleText('Zakończono\n')
+        except Exception as e:
+            self.updateConsoleText('Błąd: ' + e.value + '\n')
+
+
 
     def moveFiles(self):
-        pass
+        self.updateConsoleText('Funkcja jeszcze nieaktywna\n')

@@ -4,9 +4,9 @@ from tkinter import Tk
 from yaps import Yaps
 from gui import Gui
 
-def runGui():
+def runGui(app):
     root = Tk()
-    gui = Gui(root)
+    gui = Gui(root, app)
     root.mainloop()
     root.destroy()
 
@@ -21,7 +21,7 @@ app = Yaps()
 
 if(len(sys.argv) > 1):
     if sys.argv[1] == '--gui' or sys.argv[1] == '-g':
-        runGui()
+        runGui(app)
     else:
         runCli(app)
 else:
