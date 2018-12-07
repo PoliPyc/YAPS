@@ -11,11 +11,15 @@ def runGui(app):
     root.destroy()
 
 def runCli(app):
-    app.setDirectory(sys.argv[1])
-    if(len(sys.argv) > 2):
-        app.setOutputDirectory(sys.argv[2])
-    app.iterateFiles()
-
+    app.setDirectory(sys.argv[2])
+    if(len(sys.argv) > 3):
+        app.setOutputDirectory(sys.argv[3])
+    if sys.argv[1] == 'copy':
+        app.iterateFiles()
+    elif sys.argv[1] == 'check':
+        app.checkDuplicate()
+    else:
+        app.help()
 
 app = Yaps()
 

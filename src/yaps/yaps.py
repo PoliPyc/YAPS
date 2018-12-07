@@ -2,6 +2,7 @@ import os
 import magic
 import exifread
 import datetime
+import tempfile
 from shutil import copyfile
 
 
@@ -27,6 +28,7 @@ class Yaps:
         self.UNKNOWN_DIR = 'unknown_date'
         self.directory = False
         self.outputDirectory = False
+        self.sizeListFile = False
 
     def setDirectory(self, directory):
         if(os.path.isdir(directory)):
@@ -42,6 +44,17 @@ class Yaps:
             self.outputDirectory = directory
         else:
             raise FileNotFoundError('Output directory not found')
+
+    def checkDuplicate(self):
+        self.createSizeListFile()
+        for filename in os.listdir(self.directory):
+            size = str(os.path.getsize(self.directory + '/' + filename))
+            self.sizeListFile.write(filename + "\t" + size + "\n")
+            print(filename + "\t" + size)
+
+    def createSizeListFile(self):
+        self.sizeListFile = tempfile.TemporaryFile('a+')
+        print(self.sizeListFile)
 
     def iterateFiles(self):
         for filename in os.listdir(self.directory):
@@ -106,3 +119,6 @@ class Yaps:
 
     def copyFileIfNotExist(self, src, target):
         return copyfile(src, target)
+
+    def help(self):
+        pass
