@@ -4,40 +4,48 @@ from tkinter import *
 
 class Gui:
     def __init__(self, master, yaps):
+        LIGHT_TEXT = "#EDEFE6"
+        CONTRAST_TEXT = "#670167"
+        MAIN_BACKGROUND = "#9291A1"
+        BUTTON_BACKGROUND = "#E95F6A"
+        CONTENT_BACKGROUND = "#6A8DC5"
+
+        BUTTON_WIDTH = 30
+
         self.yaps = yaps
         self.src = ''
         self.target = ''
 
-        destinationButtons = Frame(master)
+        destinationButtons = Frame(master, bg=MAIN_BACKGROUND, pady=5)
         destinationButtons.pack()
         
         self.srcButton = Button(
-            destinationButtons, text="Podaj katalog źródłowy", command=self.selectSrc
+            destinationButtons, text="Podaj katalog źródłowy", bg=BUTTON_BACKGROUND, width=BUTTON_WIDTH, fg=LIGHT_TEXT, bd=0, command=self.selectSrc
         )
         self.targetButton = Button(
-            destinationButtons, text="Podaj katalog docelowy", command=self.selectTarget
+            destinationButtons, text="Podaj katalog docelowy", bg=BUTTON_BACKGROUND, width=BUTTON_WIDTH, fg=LIGHT_TEXT, bd=0, command=self.selectTarget
         )
 
-        fileMethods = Frame(master)
+        fileMethods = Frame(master, bg=MAIN_BACKGROUND, pady=5)
         fileMethods.pack()
 
         self.copyButton = Button(
-            fileMethods, text="Kopiuj", command=self.copyFiles
+            fileMethods, text="Kopiuj", bg=BUTTON_BACKGROUND, width=BUTTON_WIDTH, fg=LIGHT_TEXT, bd=0, command=self.copyFiles
         )
         self.moveButton = Button(
-            fileMethods, text="Przenieś", command=self.moveFiles
+            fileMethods, text="Przenieś", bg=BUTTON_BACKGROUND, width=BUTTON_WIDTH, fg=LIGHT_TEXT, bd=0, command=self.moveFiles
         )
 
-        self.srcButton.pack(side=LEFT)
-        self.targetButton.pack(side=LEFT)
+        self.srcButton.pack(side=LEFT, padx=2)
+        self.targetButton.pack(side=LEFT, padx=2)
 
-        self.copyButton.pack(side=LEFT)
-        self.moveButton.pack(side=LEFT)
+        self.copyButton.pack(side=LEFT, padx=2)
+        self.moveButton.pack(side=LEFT, padx=2)
 
         self.consoleFrame = Frame(master, height=100)
         self.consoleFrame.pack()
 
-        self.consoleText = tkst.ScrolledText(self.consoleFrame)
+        self.consoleText = tkst.ScrolledText(self.consoleFrame, bg=CONTENT_BACKGROUND, fg=CONTRAST_TEXT, padx=5, pady=5)
         self.consoleText.pack(side=TOP)
 
     def selectSrc(self):
