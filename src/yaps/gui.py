@@ -3,37 +3,37 @@ from tkinter import filedialog
 from tkinter import *
 
 class Gui:
+    LIGHT_TEXT = "#EDEFE6"
+    CONTRAST_TEXT = "#670167"
+    MAIN_BACKGROUND = "#E6B2C7"
+    BUTTON_BACKGROUND = "#E95F6A"
+    CONTENT_BACKGROUND = "#6A8DC5"
+
+    BUTTON_WIDTH = 30
+
     def __init__(self, master, yaps):
-        LIGHT_TEXT = "#EDEFE6"
-        CONTRAST_TEXT = "#670167"
-        MAIN_BACKGROUND = "#9291A1"
-        BUTTON_BACKGROUND = "#E95F6A"
-        CONTENT_BACKGROUND = "#6A8DC5"
-
-        BUTTON_WIDTH = 30
-
         self.yaps = yaps
         self.src = ''
         self.target = ''
 
-        destinationButtons = Frame(master, bg=MAIN_BACKGROUND, pady=5)
+        destinationButtons = Frame(master, bg=self.MAIN_BACKGROUND, pady=5)
         destinationButtons.pack()
         
         self.srcButton = Button(
-            destinationButtons, text="Podaj katalog źródłowy", bg=BUTTON_BACKGROUND, width=BUTTON_WIDTH, fg=LIGHT_TEXT, bd=0, command=self.selectSrc
+            destinationButtons, text="Podaj katalog źródłowy", bg=self.BUTTON_BACKGROUND, width=self.BUTTON_WIDTH, fg=self.LIGHT_TEXT, bd=0, command=self.selectSrc
         )
         self.targetButton = Button(
-            destinationButtons, text="Podaj katalog docelowy", bg=BUTTON_BACKGROUND, width=BUTTON_WIDTH, fg=LIGHT_TEXT, bd=0, command=self.selectTarget
+            destinationButtons, text="Podaj katalog docelowy", bg=self.BUTTON_BACKGROUND, width=self.BUTTON_WIDTH, fg=self.LIGHT_TEXT, bd=0, command=self.selectTarget
         )
 
-        fileMethods = Frame(master, bg=MAIN_BACKGROUND, pady=5)
+        fileMethods = Frame(master, bg=self.MAIN_BACKGROUND, pady=5)
         fileMethods.pack()
 
         self.copyButton = Button(
-            fileMethods, text="Kopiuj", bg=BUTTON_BACKGROUND, width=BUTTON_WIDTH, fg=LIGHT_TEXT, bd=0, command=self.copyFiles
+            fileMethods, text="Kopiuj", bg=self.BUTTON_BACKGROUND, width=self.BUTTON_WIDTH, fg=self.LIGHT_TEXT, bd=0, command=self.copyFiles
         )
         self.moveButton = Button(
-            fileMethods, text="Przenieś", bg=BUTTON_BACKGROUND, width=BUTTON_WIDTH, fg=LIGHT_TEXT, bd=0, command=self.moveFiles
+            fileMethods, text="Przenieś", bg=self.BUTTON_BACKGROUND, width=self.BUTTON_WIDTH, fg=self.LIGHT_TEXT, bd=0, command=self.moveFiles
         )
 
         self.srcButton.pack(side=LEFT, padx=2)
@@ -45,7 +45,7 @@ class Gui:
         self.consoleFrame = Frame(master, height=100)
         self.consoleFrame.pack()
 
-        self.consoleText = tkst.ScrolledText(self.consoleFrame, bg=CONTENT_BACKGROUND, fg=CONTRAST_TEXT, padx=5, pady=5)
+        self.consoleText = tkst.ScrolledText(self.consoleFrame, bg=self.CONTENT_BACKGROUND, fg=self.CONTRAST_TEXT, padx=5, pady=5, state="disabled")
         self.consoleText.pack(side=TOP)
 
     def selectSrc(self):
@@ -59,7 +59,9 @@ class Gui:
         self.updateConsoleText('Ustawiono katalog docelowy: ' + self.target + '\n')
 
     def updateConsoleText(self, text):
+        self.consoleText.configure(state="normal")
         self.consoleText.insert(INSERT, text)
+        self.consoleText.configure(state="disabled")
 
     def copyFiles(self):
         try:

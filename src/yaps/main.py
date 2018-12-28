@@ -7,7 +7,7 @@ from gui import Gui
 def runGui(app):
     root = Tk()
     root.title('YAPS - Yet Another Picture Sorter')
-    root.configure(bg='#9291A1')
+    root.configure(bg=Gui.MAIN_BACKGROUND)
     gui = Gui(root, app)
     root.mainloop()
     root.destroy()
