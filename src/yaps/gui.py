@@ -4,7 +4,7 @@ from tkinter import *
 
 class Gui:
     LIGHT_TEXT = "#EDEFE6"
-    CONTRAST_TEXT = "#670167"
+    CONTRAST_TEXT = "#FFFFFF"
     MAIN_BACKGROUND = "#E6B2C7"
     BUTTON_BACKGROUND = "#E95F6A"
     CONTENT_BACKGROUND = "#6A8DC5"
@@ -29,11 +29,18 @@ class Gui:
         fileMethods = Frame(master, bg=self.MAIN_BACKGROUND, pady=5)
         fileMethods.pack()
 
+        checkMethods = Frame(master, bg=self.MAIN_BACKGROUND, pady=5)
+        checkMethods.pack()
+
         self.copyButton = Button(
             fileMethods, text="Kopiuj", bg=self.BUTTON_BACKGROUND, width=self.BUTTON_WIDTH, fg=self.LIGHT_TEXT, bd=0, command=self.copyFiles
         )
         self.moveButton = Button(
             fileMethods, text="Przenieś", bg=self.BUTTON_BACKGROUND, width=self.BUTTON_WIDTH, fg=self.LIGHT_TEXT, bd=0, command=self.moveFiles
+        )
+        self.checkDuplicatesButton = Button(
+            checkMethods, text="Sprawdź duplikaty", bg=self.BUTTON_BACKGROUND, width=self.BUTTON_WIDTH, fg=self.LIGHT_TEXT, bd=0,
+            command=self.checkDuplicates
         )
 
         self.srcButton.pack(side=LEFT, padx=2)
@@ -41,6 +48,7 @@ class Gui:
 
         self.copyButton.pack(side=LEFT, padx=2)
         self.moveButton.pack(side=LEFT, padx=2)
+        self.checkDuplicatesButton.pack(side=BOTTOM, padx=2)
 
         self.consoleFrame = Frame(master, height=100)
         self.consoleFrame.pack()
@@ -62,16 +70,23 @@ class Gui:
         self.consoleText.configure(state="normal")
         self.consoleText.insert(INSERT, text)
         self.consoleText.configure(state="disabled")
+        self.consoleText.see("end")
 
     def copyFiles(self):
         try:
             self.updateConsoleText('Transfer zdjęć...\n')
             self.yaps.iterateFiles()
+            self.updateConsoleText(self.yaps.logger.getLog())
+            self.yaps.logger.clearLog()
             self.updateConsoleText('Zakończono\n')
         except Exception as e:
-            self.updateConsoleText('Błąd: ' + e.value + '\n')
-
-
+            self.updateConsoleText('Błąd: ' + str(e) + '\n')
 
     def moveFiles(self):
         self.updateConsoleText('Funkcja jeszcze nieaktywna\n')
+
+    def checkDuplicates(self):
+        try:
+            self.yaps.checkDuplicates()
+        except Exception as e:
+            self.updateConsoleText('Błąd: ' + str(e) + '\n')

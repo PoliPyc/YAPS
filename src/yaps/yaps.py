@@ -5,7 +5,6 @@ import datetime
 import tempfile
 from shutil import copyfile
 
-
 ########## NOTES
 # Checking for duplicates
 # 1. List file paths with their sizes
@@ -24,10 +23,11 @@ from shutil import copyfile
 
 
 class Yaps:
-    def __init__(self):
+    def __init__(self, logger):
+        self.logger = logger
         self.UNKNOWN_DIR = 'unknown_date'
-        self.directory = False
-        self.outputDirectory = False
+        self.directory = ''
+        self.outputDirectory = ''
         self.sizeListFile = False
 
     def setDirectory(self, directory):
@@ -45,20 +45,20 @@ class Yaps:
         else:
             raise FileNotFoundError('Output directory not found')
 
-    def checkDuplicate(self):
+    def checkDuplicates(self):
         self.createSizeListFile()
         for filename in os.listdir(self.directory):
             size = str(os.path.getsize(self.directory + '/' + filename))
             self.sizeListFile.write(filename + "\t" + size + "\n")
-            print(filename + "\t" + size)
+            self.logger.putLog(filename + "\t" + size)
 
     def createSizeListFile(self):
         self.sizeListFile = tempfile.TemporaryFile('a+')
-        print(self.sizeListFile)
+        self.logger.putLog(self.sizeListFile)
 
     def iterateFiles(self):
         for filename in os.listdir(self.directory):
-            print('File found: ', filename)
+            self.logger.putLog('File found: ' + filename)
             fullFilePath = self.directory + '/' + filename
             if(os.path.isdir(fullFilePath)):
                 continue
@@ -95,9 +95,9 @@ class Yaps:
         tags = exifread.process_file(f, details=False)
         f.close()
 
-        if 'Image DateTime' in tags:
-            print("Picture was shot on: ",tags['Image DateTime'])
-            return tags['Image DateTime'].values
+        if 'EXIF DateTimeOriginal' in tags:
+            self.logger.putLog("Picture was shot on: " + tags['EXIF DateTimeOriginal'])
+            return tags['EXIF DateTimeOriginal'].values
         else:
             return False
 

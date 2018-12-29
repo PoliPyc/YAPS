@@ -1,6 +1,7 @@
 import sys
 from tkinter import Tk
 
+from logger import Logger
 from yaps import Yaps
 from gui import Gui
 
@@ -10,7 +11,6 @@ def runGui(app):
     root.configure(bg=Gui.MAIN_BACKGROUND)
     gui = Gui(root, app)
     root.mainloop()
-    root.destroy()
 
 def runCli(app):
     app.setDirectory(sys.argv[2])
@@ -23,7 +23,11 @@ def runCli(app):
     else:
         app.help()
 
-app = Yaps()
+    print(app.logger.getLog())
+    app.logger.clearLog()
+
+logger = Logger()
+app = Yaps(logger)
 
 if(len(sys.argv) > 1):
     if sys.argv[1] == '--gui' or sys.argv[1] == '-g':
