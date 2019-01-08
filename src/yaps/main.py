@@ -19,7 +19,7 @@ def runCli(app):
     if sys.argv[1] == 'copy':
         app.iterateFiles()
     elif sys.argv[1] == 'check':
-        app.checkDuplicate()
+        app.checkDuplicates()
     else:
         app.help()
 

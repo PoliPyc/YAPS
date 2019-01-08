@@ -46,15 +46,25 @@ class Yaps:
             raise FileNotFoundError('Output directory not found')
 
     def checkDuplicates(self):
-        self.createSizeListFile()
+        self.sizeListFile = self.createSizeListFile()
+        self.storeFilesSize()
+        sameSizeList = self.checkForSameSize()
+        
+
+    def createSizeListFile(self):
+        temporaryFile = tempfile.TemporaryFile('a+')
+        self.logger.putLog(str(temporaryFile))
+        return temporaryFile
+
+    def storeFilesSize(self):
         for filename in os.listdir(self.directory):
             size = str(os.path.getsize(self.directory + '/' + filename))
             self.sizeListFile.write(filename + "\t" + size + "\n")
             self.logger.putLog(filename + "\t" + size)
 
-    def createSizeListFile(self):
-        self.sizeListFile = tempfile.TemporaryFile('a+')
-        self.logger.putLog(self.sizeListFile)
+    def checkForSameSize(self):
+        with open(self.sizeListFile) as file:
+            print(list())
 
     def iterateFiles(self):
         for filename in os.listdir(self.directory):
