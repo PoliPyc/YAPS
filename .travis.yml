@@ -1,16 +1,12 @@
 language: python
 python:
-  - "3.4"
-  - "3.5"
   - "3.6"
-  - "3.7"
+  - "3.4"
 
 install:
   - pip install pipenv
   - pipenv install -d
-  - pipenv shell
-  - pip install -e .
+  - pipenv run pip install -e .
 
 script:
-  - pipenv shell
-  - pytest
+  - pipenv run pytest
