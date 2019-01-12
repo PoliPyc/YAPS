@@ -2,13 +2,15 @@ import pytest
 import os
 
 from src.yaps.yaps import Yaps
+from src.yaps.logger import Logger
 
 from pprint import pprint
 
 def testSetDirectory():
-    yaps = Yaps()
+    logger = Logger()
+    yaps = Yaps(logger)
 
-    assert yaps.directory == False
+    assert yaps.directory == ''
 
     yaps.setDirectory('.')
     assert yaps.directory == '.'
@@ -23,7 +25,8 @@ def testSetOutputDirectory(tmpdir):
 
     os.mkdir(unwritableDirPath, 0o555)
     os.mkdir(writableDirPath, 0o777)
-    yaps = Yaps()
+    logger = Logger()
+    yaps = Yaps(logger)
     
     with pytest.raises(Exception):
         yaps.setOutputDirectory(unwritableDirPath)
@@ -36,7 +39,8 @@ def testSetOutputDirectory(tmpdir):
         yaps.setOutputDirectory(notExistingPath)
 
 def testGetDirNameByDate():
-    yaps = Yaps()
+    logger = Logger()
+    yaps = Yaps(logger)
 
     date = '2018:09:01 04:40:23'
     assert yaps.getDirNameByDate(date) == '2018-09-01'
