@@ -54,4 +54,13 @@ def testGetDirNameByDate():
     assert yaps.getDirNameByDate(None) == yaps.UNKNOWN_DIR
 
 
+def testCheckIfImage():
+    logger = Logger()
+    yaps = Yaps(logger)
 
+    scriptPath = os.path.dirname(os.path.abspath(__file__))
+    testImagePath = str(scriptPath + '/resources/IMG_0001.jpg')
+    assert yaps.checkIfImage(testImagePath) == True
+    
+    testImagePath = str(scriptPath + '/resources/textFile.txt')
+    assert yaps.checkIfImage(testImagePath) == False
