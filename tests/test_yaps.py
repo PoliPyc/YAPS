@@ -19,9 +19,9 @@ def testSetDirectory():
         yaps.setDirectory('./notExistingDir')
 
 def testSetOutputDirectory(tmpdir):
-    unwritableDirPath = tmpdir + '/unwriteableDir'
-    writableDirPath = tmpdir + '/writeableDir'
-    notExistingPath = tmpdir + '/notExistingDir'
+    unwritableDirPath = str(tmpdir + '/unwriteableDir')
+    writableDirPath = str(tmpdir + '/writeableDir')
+    notExistingPath = strtmpdir + '/notExistingDir')
 
     os.mkdir(unwritableDirPath, 0o555)
     os.mkdir(writableDirPath, 0o777)

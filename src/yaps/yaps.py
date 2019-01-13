@@ -16,7 +16,6 @@ from shutil import copyfile
 # Tests!
 # More interactive
 # Refactor setOutputDirectory and iterateFiles
-# GUI
 # Other exif filters
 # Yaps readme, help messages
 #
