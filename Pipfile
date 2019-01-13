@@ -8,7 +8,6 @@ python-magic = "==0.4.15"
 ExifRead = "==2.1.2"
 
 [dev-packages]
-pathlib2 = "*"
 pytest = "*"
 pylint = "*"
 pytest-cov = "*"

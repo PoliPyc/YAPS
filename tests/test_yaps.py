@@ -21,7 +21,7 @@ def testSetDirectory():
 def testSetOutputDirectory(tmpdir):
     unwritableDirPath = str(tmpdir + '/unwriteableDir')
     writableDirPath = str(tmpdir + '/writeableDir')
-    notExistingPath = strtmpdir + '/notExistingDir')
+    notExistingPath = str(tmpdir + '/notExistingDir')
 
     os.mkdir(unwritableDirPath, 0o555)
     os.mkdir(writableDirPath, 0o777)
