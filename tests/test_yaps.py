@@ -1,5 +1,6 @@
 import pytest
 import os
+import shutil
 
 from src.yaps.yaps import Yaps
 from src.yaps.logger import Logger
@@ -64,3 +65,38 @@ def testCheckIfImage():
     
     testImagePath = str(scriptPath + '/resources/textFile.txt')
     assert yaps.checkIfImage(testImagePath) == False
+
+def testReadExifData():
+    logger = Logger()
+    yaps = Yaps(logger)
+
+    scriptPath = os.path.dirname(os.path.abspath(__file__))
+    testImagePath = str(scriptPath + '/resources/IMG_0001.jpg')
+    assert yaps.readExifData(testImagePath) == '2018:05:26 08:53:55'
+
+    testImagePath = str(scriptPath + '/resources/textFile.txt')
+    assert yaps.readExifData(testImagePath) == False
+
+    assert yaps.logger.getLog() == 'Picture was shot on: 2018:05:26 08:53:55\n'
+
+def testIterateFiles():
+    logger = Logger()
+    yaps = Yaps(logger)
+
+    scriptPath = os.path.dirname(os.path.abspath(__file__))
+    sourcePath = str(scriptPath + '/resources')
+    destinationPath = str(scriptPath + '/destination')
+    os.mkdir(destinationPath)
+    yaps.setDirectory(sourcePath)
+    yaps.setOutputDirectory(destinationPath)
+
+    yaps.iterateFiles()
+
+    assert os.path.isdir(destinationPath+ '/2018-05-26') == True
+    assert os.path.isfile(destinationPath+ '/2018-05-26/IMG_0001.jpg') == True
+    assert os.path.isfile(destinationPath+ '/2018-05-26/IMG_0002.jpg') == False
+    assert os.path.isdir(destinationPath+ '/2018-11-04') == True
+    assert os.path.isfile(destinationPath+ '/2018-11-04/IMG_0002.jpg') == True
+    assert os.path.isfile(destinationPath+ '/2018-11-04/IMG_0001.jpg') == False
+
+    shutil.rmtree(destinationPath)

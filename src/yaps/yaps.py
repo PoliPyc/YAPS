@@ -105,7 +105,7 @@ class Yaps:
         f.close()
 
         if 'EXIF DateTimeOriginal' in tags:
-            self.logger.putLog("Picture was shot on: " + tags['EXIF DateTimeOriginal'])
+            self.logger.putLog("Picture was shot on: " + str(tags['EXIF DateTimeOriginal']))
             return tags['EXIF DateTimeOriginal'].values
         else:
             return False
