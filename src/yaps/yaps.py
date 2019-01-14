@@ -16,7 +16,6 @@ from shutil import copyfile
 # Tests!
 # More interactive
 # Refactor setOutputDirectory and iterateFiles
-# GUI
 # Other exif filters
 # Yaps readme, help messages
 #
@@ -106,7 +105,7 @@ class Yaps:
         f.close()
 
         if 'EXIF DateTimeOriginal' in tags:
-            self.logger.putLog("Picture was shot on: " + tags['EXIF DateTimeOriginal'])
+            self.logger.putLog("Picture was shot on: " + str(tags['EXIF DateTimeOriginal']))
             return tags['EXIF DateTimeOriginal'].values
         else:
             return False

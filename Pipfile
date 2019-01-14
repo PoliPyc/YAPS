@@ -1,7 +1,7 @@
 [[source]]
-url = "https://github.com/poliakustyczny/YAPS/"
+url = "https://pypi.org/simple"
 verify_ssl = true
-name = "YAPS"
+name = "pypi"
 
 [packages]
 python-magic = "==0.4.15"
@@ -13,4 +13,4 @@ pylint = "*"
 pytest-cov = "*"
 
 [requires]
-python_version = "3.6"
+#python_version = "3.6"
