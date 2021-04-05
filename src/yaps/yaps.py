@@ -5,6 +5,7 @@ import datetime
 import tempfile
 from shutil import copyfile
 
+from pictures import PictureList, Picture
 ########## NOTES
 # Checking for duplicates
 # 1. List file paths with their sizes
@@ -28,14 +29,17 @@ class Yaps:
         self.directory = ''
         self.outputDirectory = ''
         self.sizeListFile = False
+        self.pictures = PictureList()
 
     def setDirectory(self, directory):
+        """Sets source directory from which app scan pictures"""
         if(os.path.isdir(directory)):
             self.directory = directory
         else:
             raise FileNotFoundError('Directory not found')
 
     def setOutputDirectory(self, directory):
+        """Sets output directory for various purposes"""
         if(os.path.isdir(directory)):
             if not os.access(directory, os.W_OK):
                 raise Exception('Directory not writable')
@@ -43,6 +47,17 @@ class Yaps:
             self.outputDirectory = directory
         else:
             raise FileNotFoundError('Output directory not found')
+
+    def preparePictureList(self):
+        for filename in os.listdir(self.directory):
+            fullFilePath = self.directory + '/' + filename
+        
+            if(os.path.isdir(fullFilePath)):
+                continue
+            if(self.checkIfImage(fullFilePath)):
+                exifData = self.readExifData(fullFilePath)
+                picture = Picture(filename, exifData)
+                self.pictures.append(picture)
 
     def checkDuplicates(self):
         self.sizeListFile = self.createSizeListFile()

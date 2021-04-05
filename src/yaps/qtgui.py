@@ -63,6 +63,7 @@ class Ui_MainWindow(object):
 
     def openCatalog(self):
         self.yaps.setDirectory(self.openDirectoryDialog())
+        self.yaps.preparePictureList()
         self.showPictures()
 
     def openDirectoryDialog(self):
@@ -71,6 +72,14 @@ class Ui_MainWindow(object):
     def showPictures(self):
         _translate = QtCore.QCoreApplication.translate
         self.pictureEmptyLabel.setText(_translate("MainWindow", "Powinno się załadować :p"))
+        self.pictureLabel = QtWidgets.QLabel(self.gridLayoutWidget)
+        pic_print = ''
+        for pic in self.yaps.pictures:
+            pic_print += pic.filename + '\n'
+
+        print(pic_print)
+        self.pictureEmptyLabel.setObjectName(pic_print)
+
 
 
 def run(yaps):

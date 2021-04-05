@@ -22,7 +22,7 @@ def runCli(app):
     if(len(sys.argv) > 3):
         app.setOutputDirectory(sys.argv[3])
     if sys.argv[1] == 'copy':
-        app.iterateFiles()
+        app.chiterateFiles()
     elif sys.argv[1] == 'check':
         app.checkDuplicates()
     else:
