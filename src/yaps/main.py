@@ -5,12 +5,17 @@ from logger import Logger
 from yaps import Yaps
 from gui import Gui
 
+import qtgui
+
 def runGui(app):
     root = Tk()
     root.title('YAPS - Yet Another Picture Sorter')
     root.configure(bg=Gui.MAIN_BACKGROUND)
     gui = Gui(root, app)
     root.mainloop()
+
+def runQtGui(app):
+    qtgui.run()
 
 def runCli(app):
     app.setDirectory(sys.argv[2])
@@ -32,6 +37,8 @@ app = Yaps(logger)
 if(len(sys.argv) > 1):
     if sys.argv[1] == '--gui' or sys.argv[1] == '-g':
         runGui(app)
+    elif  sys.argv[1] == '--qt' or sys.argv[1] == '-q':
+        runQtGui(app)
     else:
         runCli(app)
 else:
