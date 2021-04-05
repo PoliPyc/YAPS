@@ -12,6 +12,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_MainWindow(object):
+    def __init__(self, yaps):
+        self.yaps = yaps
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
@@ -45,6 +48,8 @@ class Ui_MainWindow(object):
         self.menuYaps.addAction(self.actionOpenCatalog)
         self.menubar.addAction(self.menuYaps.menuAction())
 
+        self.actionOpenCatalog.triggered.connect(self.openCatalog)
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -56,14 +61,26 @@ class Ui_MainWindow(object):
         self.menuYaps.setTitle(_translate("MainWindow", "Yaps"))
         self.actionOpenCatalog.setText(_translate("MainWindow", "Open catalog"))
 
-def run():
+    def openCatalog(self):
+        self.yaps.setDirectory(self.openDirectoryDialog())
+        self.showPictures()
+
+    def openDirectoryDialog(self):
+        return str(QtWidgets.QFileDialog.getExistingDirectory(None, "Select Directory"))
+
+    def showPictures(self):
+        _translate = QtCore.QCoreApplication.translate
+        self.pictureEmptyLabel.setText(_translate("MainWindow", "Powinno się załadować :p"))
+
+
+def run(yaps):
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = Ui_MainWindow(yaps)
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
 
 if __name__ == "__main__":
     import sys
-    run()
+    run(None)

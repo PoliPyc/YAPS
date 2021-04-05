@@ -15,7 +15,7 @@ def runGui(app):
     root.mainloop()
 
 def runQtGui(app):
-    qtgui.run()
+    qtgui.run(app)
 
 def runCli(app):
     app.setDirectory(sys.argv[2])
