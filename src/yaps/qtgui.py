@@ -73,12 +73,20 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         self.pictureEmptyLabel.setText(_translate("MainWindow", "Powinno się załadować :p"))
         self.pictureLabel = QtWidgets.QLabel(self.gridLayoutWidget)
+        self.pictureLabel.setObjectName("pictureLabel")
+        print("ładujemy")
         pic_print = ''
+        i = 1
         for pic in self.yaps.pictures:
             pic_print += pic.filename + '\n'
+            self.picture = QtWidgets.QLabel(self.gridLayoutWidget)
+            self.picture.setObjectName("picture_" + pic.filename)
+            self.picture.setPixmap(QtGui.QPixmap(self.yaps.directory + "/" + pic.filename))
+            self.picturesGrid.addWidget(self.picture, i, 1, 1, 1)
+            i += 1
 
-        print(pic_print)
-        self.pictureEmptyLabel.setObjectName(pic_print)
+        self.pictureLabel.setText(pic_print)
+        self.picturesGrid.addWidget(self.pictureLabel, 1, 0, 1, 1)
 
 
 

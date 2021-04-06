@@ -57,6 +57,7 @@ class Yaps:
             if(self.checkIfImage(fullFilePath)):
                 exifData = self.readExifData(fullFilePath)
                 picture = Picture(filename, exifData)
+                print(picture)
                 self.pictures.append(picture)
 
     def checkDuplicates(self):
